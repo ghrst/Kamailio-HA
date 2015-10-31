@@ -1,0 +1,3 @@
+Package: *
+Pin: origin "ppa.mmogp.com"
+Pin-Priority: 900

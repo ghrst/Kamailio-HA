@@ -1,0 +1,37 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Install and configure Corosync, Pacemaker and Crmsh
+  hosts: kamailio
+  sudo: False
+  vars:
+    preferencesPath: /etc/apt/preferences.d/
+  tasks:
+    - name: To use this ppa with https, first install the https transport module for apt (Pacemaker is in these repositores) refer to 'https://wiki.debian.org/Debian-HA/ClustersFromScratch'
+      apt: pkg=apt-transport-https update_cache=yes
+      
+    - name: save the MMOD List (http) or MMOD List (https) to /etc/apt/sources.list.d/ 
+      get_url: url=https://ppa.mmogp.com/apt/debian/transport/https/mmod.list dest=/etc/apt/sources.list.d/mmod.list force=yes
+    
+    - name: Finally, add the MMOD GnuPG Key to your system and update apt
+      apt_key: url=https://ppa.mmogp.com/apt/debian/mmod.gpg.key
+    
+    - name: Adding repository
+      apt_repository: repo='deb http://ftp.de.debian.org/debian testing main' state=present update_cache=yes
+      
+    - name: And we should add also a preferences file, so in this way we won't mess with the system
+      copy: src=./files/preferences-mmod dest={{preferencesPath}}/preferences-mmod force=yes
+    
+    - name: Copying the other preferences file
+      copy: src=./files/preferences-testing dest={{preferencesPath}}/preferences-testing force=yes
+      
+    - name: Now we are reaqdy to install our packages. I used default_release which is equal to -t (refer to installation guide)
+      apt: pkg={{item}} update_cache=yes default_release=testing
+      with_items:
+        - libqb0
+        - fence-agents
+        
+    - name: Finally installing pacemaker and corosync
+      apt: pkg={{item}} update_cache=yes
+      with_items:
+        - pacemaker
+        - corosync
