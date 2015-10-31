@@ -1,0 +1,4 @@
+[kamailio]
+#Server-name ansible_ssh_host=<addr>  ansible_ssh_user=<user> ansible_ssh_pass=<pass>
+
+
