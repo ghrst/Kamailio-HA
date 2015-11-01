@@ -5,6 +5,7 @@
   sudo: False
   vars:
     preferencesPath: /etc/apt/preferences.d/
+    mtCastAddr: "239.0.0.95"
   tasks:
     - name: To use this ppa with https, first install the https transport module for apt (Pacemaker is in these repositores) refer to 'https://wiki.debian.org/Debian-HA/ClustersFromScratch'
       apt: pkg=apt-transport-https update_cache=yes
@@ -35,3 +36,12 @@
       with_items:
         - pacemaker
         - corosync
+        
+    - name: Copying corosync configuration template to each machine!
+      template: src=./templates/corosync.conf dest=/etc/corosync/corosync.conf force=yes
+      notify: restart corosync
+     
+  handlers:
+    - name: restart corosync
+      service: name=corosync state=restarted
+    
