@@ -1,4 +1,10 @@
+#Default SSH user is defined in ansible.cfg file as root. You can override this for each host using ansible_ssh_user behavioral parameter.
+#Also default ssh port is assumed to be 22 in ansible.cfg. Again you can override this using: ansible_ssh_port parameter.
+
+#Each line must have the following format:
+#Server-name ansible_ssh_host=<addr> ansible_ssh_pass=<pass>
+
 [kamailio]
-#Server-name ansible_ssh_host=<addr>  ansible_ssh_user=<user> ansible_ssh_pass=<pass>
+
 
 
