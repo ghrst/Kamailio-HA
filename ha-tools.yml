@@ -1,11 +1,16 @@
 #!/usr/bin/env ansible-playbook
 
+#Very Important:: Be sure that host name of your nodes are not equal!
+
 - name: Install and configure Corosync, Pacemaker and Crmsh
   hosts: kamailio
   sudo: False
   vars:
     preferencesPath: /etc/apt/preferences.d/
     mtCastAddr: "239.0.0.95"
+    kamailioVirtualIP: "192.168.120.90"
+    kamailioVirtualIPNetMask: "255.255.255.0"
+    kamailioVirtualIPBroadCast: "192.168.120.255"
   tasks:
     - name: To use this ppa with https, first install the https transport module for apt (Pacemaker is in these repositores) refer to 'https://wiki.debian.org/Debian-HA/ClustersFromScratch'
       apt: pkg=apt-transport-https update_cache=yes
@@ -36,10 +41,26 @@
       with_items:
         - pacemaker
         - corosync
+    
+    #FIXME:: Adding to different runlevels! This currently does not work use another mechanism.
+    - name: Adding corosync to different runlevels
+      service: name=corosync enabled=yes state=started
+      
+    - name: Adding pacemaker to different runlevels
+      service: name=pacemaker enabled=yes state=started
         
     - name: Copying corosync configuration template to each machine!
       template: src=./templates/corosync.conf dest=/etc/corosync/corosync.conf force=yes
       notify: restart corosync
+      
+    #Now you can check the output of crm status to see if your nodes are online or not!
+    
+    - name: Copying virtual interface config file
+      template: src=./templates/virtualIface dest=/etc/network/interfaces.d/virtualIface force=yes
+    
+    - name: Restarting networking service
+      service: name=networking state=restarted
+    
      
   handlers:
     - name: restart corosync
