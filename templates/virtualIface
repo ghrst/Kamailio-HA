@@ -1,0 +1,5 @@
+auto eth0:0
+iface eth0:0 inet static
+    address {{kamailioVirtualIP}}
+    netmask {{kamailioVirtualIPNetMask}}
+    broadcast {{kamailioVirtualIPBroadCast}}
