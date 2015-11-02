@@ -1,0 +1,79 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Install and configure Kamailio
+  hosts: kamailio
+  sudo: False
+  vars:
+      kamailioSrcPath: /usr/local/src/kamailio
+      kamailioHomeDir: /var/run/kamailio
+      kamailioDbURL: mysql://kamailio:kamailio@localhost/kamailio
+      kamailioSourceUrl: http://www.kamailio.org/pub/kamailio/4.1.1/src/kamailio-4.1.1_src.tar.gz
+
+      
+  tasks:  
+    - name: Installing compilation prerequisites
+      apt: pkg={{item}} update_cache=yes
+      with_items:
+        - gcc
+        - bison
+        - flex
+        - make
+        - openssl
+        - libmysqlclient-dev
+        - libxmlrpc-core-c3-dev
+        - rtpproxy
+    
+    - name: Copy rtpproxy's default file to /etc/default/rtpproxy
+      template: src=./templates/rtpproxy.default dest=/etc/default/rtpproxy force=yes
+    
+    - name: Copy rtpproxy's init script to /etc/init.d/rtpproxy
+      copy: src=./files/rtpproxy.init dest=/etc/init.d/rtpproxy force=yes
+      notify: restart rtpproxy
+      
+    - name: Create a directory to store Kamailio's source files
+      file: path={{kamailioSrcPath}} state=directory
+      
+    - name: download Kamailio 4.1.1
+      get_url: url={{kamailioSourceUrl}} dest={{kamailioSrcPath}}
+      
+    - name: Un-taring Kamailio's source file using tar xf
+      unarchive: src={{kamailioSrcPath}}/kamailio-4.1.1_src.tar.gz dest={{kamailioSrcPath}} copy=no
+      
+    - name: Compiling Kamailio
+      shell: make prefix=/ all include_modules="db_mysql" chdir={{kamailioSrcPath}}/kamailio-4.1.1/
+      
+    - name: Installing Kamailio
+      shell: make prefix=/ install include_modules="db_mysql" chdir={{kamailioSrcPath}}/kamailio-4.1.1/
+      
+    - name: Creating group for kamailio
+      group: name=kamailio
+    
+    - name: Creating user for kamailio
+      user: name=kamailio home={{kamailioHomeDir}} group=kamailio
+      
+    - name: Creating /var/run/kamailio and setting premissions
+      file: path={{kamailioHomeDir}} owner=kamailio group=kamailio state=directory
+      
+    - name: Installing Kamailio's Config file in /etc/kamailio/kamailio.cfg
+      template: src=./templates/kamailio.cfg dest=/etc/kamailio/kamailio.cfg force=yes
+      
+    - name: Installing Kamailio's default file to /etc/default/kamailio
+      copy: src=./files/kamailio.default dest=/etc/default/kamailio force=yes
+    
+    - name: Installing Kamailio's init script from files into /etc/init.d/kamailio
+      copy: src=./files/kamailio.init dest=/etc/init.d/kamailio mode=0755
+
+    - name: Starting Kamailio's service
+      service: name=kamailio state=started
+      
+    #FIXME:: 
+    - name: Adding kamailio to different runlevels : update-rc.d kamailio defaults 99
+      shell: 
+      
+    
+        
+     
+   
+  handlers:
+    - name: restart rtpproxy
+      service: name=rtpproxy state=restarted
