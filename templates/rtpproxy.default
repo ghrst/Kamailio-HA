@@ -1,0 +1,10 @@
+# Defaults for rtpproxy
+
+# To listen on an UDP socket, uncomment this line:
+LISTEN_ADDR={{kamailioVirtualIP}}
+CONTROL_SOCK="udp:localhost:7722"
+
+
+# Additional options that are passed to the daemon.
+EXTRA_OPTS="-l ${LISTEN_ADDR}"
+
