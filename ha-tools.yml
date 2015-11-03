@@ -5,12 +5,9 @@
 - name: Install and configure Corosync, Pacemaker and Crmsh
   hosts: kamailio
   sudo: False
-  vars:
-    preferencesPath: /etc/apt/preferences.d/
-    mtCastAddr: "239.0.0.95"
-    kamailioVirtualIP: "192.168.120.90"
-    kamailioVirtualIPNetMask: "255.255.255.0"
-    kamailioVirtualIPBroadCast: "192.168.120.255"
+  vars_files:
+    - settings.yml
+
   tasks:
     - name: To use this ppa with https, first install the https transport module for apt (Pacemaker is in these repositores) refer to 'https://wiki.debian.org/Debian-HA/ClustersFromScratch'
       apt: pkg=apt-transport-https update_cache=yes

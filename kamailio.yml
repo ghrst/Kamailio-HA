@@ -3,13 +3,8 @@
 - name: Install and configure Kamailio
   hosts: kamailio
   sudo: False
-  vars:
-      kamailioSrcPath: /usr/local/src/kamailio
-      kamailioHomeDir: /var/run/kamailio
-      kamailioDbURL: mysql://kamailio:kamailio@localhost/kamailio
-      kamailioSourceUrl: http://www.kamailio.org/pub/kamailio/4.1.1/src/kamailio-4.1.1_src.tar.gz
-
-      
+  vars_files:
+      - settings.yml      
   tasks:  
     - name: Installing compilation prerequisites
       apt: pkg={{item}} update_cache=yes
@@ -22,6 +17,8 @@
         - libmysqlclient-dev
         - libxmlrpc-core-c3-dev
         - rtpproxy
+        - python-mysqldb
+        - mysql-server
     
     - name: Copy rtpproxy's default file to /etc/default/rtpproxy
       template: src=./templates/rtpproxy.default dest=/etc/default/rtpproxy force=yes
@@ -62,13 +59,15 @@
     
     - name: Installing Kamailio's init script from files into /etc/init.d/kamailio
       copy: src=./files/kamailio.init dest=/etc/init.d/kamailio mode=0755
+      
+    - name: Adding kamailio to different runlevels using update-rc.d kamailio defaults 99
+      shell: update-rc.d kamailio defaults 99
+      
 
     - name: Starting Kamailio's service
       service: name=kamailio state=started
       
-    #FIXME:: 
-    - name: Adding kamailio to different runlevels : update-rc.d kamailio defaults 99
-      shell: 
+    
       
     
         
