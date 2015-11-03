@@ -13,6 +13,7 @@ kamailioVirtualIP: "192.168.120.90"
 kamailioVirtualIPNetMask: "255.255.255.0"
 kamailioVirtualIPBroadCast: "192.168.120.255"
 kamailioPublicIP: "192.168.120.90"
+kamailioSIPDomain: "{{kamailioPublicIP}}"
 
 
 #Other
