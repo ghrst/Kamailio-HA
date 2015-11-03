@@ -1,0 +1,20 @@
+#Mysql Settings
+mySqlRootPass: password
+mySqlKamailioUser: kamailiouser
+mySqlKamailioPass: password
+
+#Kamailio-related settings
+kamailioSrcPath: /usr/local/src/kamailio
+kamailioHomeDir: /var/run/kamailio
+#Here we assume that mySql is installed on local machine, and db name is kamailio
+kamailioDbURL: mysql://{{mySqlKamailioUser}}:{{mySqlKamailioPass}}@localhost/kamailio
+kamailioSourceUrl: http://www.kamailio.org/pub/kamailio/4.1.1/src/kamailio-4.1.1_src.tar.gz
+kamailioVirtualIP: "192.168.120.90"
+kamailioVirtualIPNetMask: "255.255.255.0"
+kamailioVirtualIPBroadCast: "192.168.120.255"
+kamailioPublicIP: "192.168.120.90"
+
+
+#Other
+preferencesPath: /etc/apt/preferences.d/
+mtCastAddr: "239.0.0.95"
