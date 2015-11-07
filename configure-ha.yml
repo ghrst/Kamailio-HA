@@ -4,6 +4,8 @@
   hosts: kamailio
   vars:
     cibPath: "/usr/local/src/"
+  vars_files:
+    - settings.yml
   tasks:
     - name: Install sipsak (kamailio's OCF script needs this)
       apt: pkg=sipsak update_cache=yes
