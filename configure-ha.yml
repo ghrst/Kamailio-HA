@@ -9,7 +9,8 @@
   tasks:
     - name: Install sipsak (kamailio's OCF script needs this)
       apt: pkg=sipsak update_cache=yes
-
+    
+    #FIXME:: Carrying these operation on one of the nodes if enough. Applying settings on multiple nodes causes an error. Anyway it works.
     - name: Now we disable stonith (On a real cluster you must have this)
       shell: crm configure property stonith-enabled=false
       
