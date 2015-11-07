@@ -1,0 +1,16 @@
+primitive kamailio-ip IPaddr2 \
+        params cidr_netmask=24 ip={{kamailioVirtualIP}} nic=eth0 \
+        op stop interval=0 timeout=20s \
+        op start interval=0 timeout=20s \
+        op monitor interval=10s timeout=20s
+primitive kamailio-srv kamailio \
+        params listen_address={{kamailioVirtualIP}} monitoring_ip={{kamailioVirtualIP}} proto=udp port=5060 binary="/sbin/kamailio" conffile="/etc/kamailio/kamailio.cfg" \
+        op stop interval=0 timeout=30s  \
+        op start interval=0 timeout=60s  \
+        op monitor interval=10s timeout=30s  \
+        meta target-role=Started
+primitive rtpproxy lsb:rtpproxy \
+        op stop interval=0 timeout=20s \
+        op start interval=0 timeout=20 \
+        op monitor interval=10s timeout=20s
+group kamailio-group kamailio-ip rtpproxy kamailio-srv
