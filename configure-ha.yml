@@ -1,0 +1,30 @@
+#!/usr/bin/env ansible-playbook
+
+- name: This play is going to configure Corosync and Pacemaker
+  hosts: kamailio
+  vars:
+    cibPath: "/usr/local/src/"
+  tasks:
+    - name: Install sipsak (kamailio's OCF script needs this)
+      apt: pkg=sipsak update_cache=yes
+
+    - name: Now we disable stonith (On a real cluster you must have this)
+      shell: crm configure property stonith-enabled=false
+      
+    - name: Configure no-qourum-policy = ignore because we have a two node cluster.
+      shell: crm configure property no-quorum-policy=ignore
+    
+    - name: We want the resources to stick to the node they are on so set default-resource-stickiness = 10000 (This can also be configured per resource)
+      shell: crm configure property default-resource-stickiness=10000    
+
+    - name: Copying cib file
+      template: src=templates/cib.txt dest={{cibPath}} force=yes
+    
+    - name: Loading configurations from cib.txt
+      shell: crm configure load update {{cibPath}}cib.txt
+      
+     
+    
+    
+    
+    
