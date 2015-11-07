@@ -1,5 +1,12 @@
 #!/usr/bin/env ansible-playbook
 
+##############################################################
+# Author: Gholamreza Sabery Tabrizy
+# Email: reza_sabery_89@yahoo.com
+# Project Repository: https://github.com/ghrst/Kamailio-HA
+##############################################################
+
+
 #Very Important:: Be sure that host name of your nodes are not equal!
 
 - name: Install and configure Corosync, Pacemaker and Crmsh
