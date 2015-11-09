@@ -1,10 +1,10 @@
 #!/usr/bin/env ansible-playbook
 
-###########################################
+##############################################################
 # Author: Gholamreza Sabery Tabrizy
 # Email: reza_sabery_89@yahoo.com
 # Project Repository: https://github.com/ghrst/Kamailio-HA
-###########################################
+##############################################################
 
 - name: This play is going to configure Corosync and Pacemaker
   hosts: kamailio
