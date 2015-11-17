@@ -9,3 +9,7 @@
 
 
 [mysql]
+
+
+#This group should contain one of the hosts in kamailio group. It is used in a play inside kamailio.yml to call kamdbctl create
+[kamailioDbCreator]
