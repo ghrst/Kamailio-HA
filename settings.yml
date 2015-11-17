@@ -2,12 +2,13 @@
 mySqlRootPass: password
 mySqlKamailioUser: kamailiouser
 mySqlKamailioPass: password
+mySqlHost: "192.168.120.79"
 
 #Kamailio-related settings
 kamailioSrcPath: /usr/local/src/kamailio
 kamailioHomeDir: /var/run/kamailio
 #FIXME:: Change the host name for your database server.
-kamailioDbURL: mysql://{{mySqlKamailioUser}}:{{mySqlKamailioPass}}@localhost/kamailio
+kamailioDbURL: mysql://{{mySqlKamailioUser}}:{{mySqlKamailioPass}}@{{mySqlHost}}/kamailio
 kamailioSourceUrl: http://www.kamailio.org/pub/kamailio/4.1.1/src/kamailio-4.1.1_src.tar.gz
 kamailioVirtualIP: "192.168.120.90"
 kamailioVirtualIPNetMask: "255.255.255.0"
@@ -19,3 +20,7 @@ kamailioSIPDomain: "{{kamailioPublicIP}}"
 #Other
 preferencesPath: /etc/apt/preferences.d/
 mtCastAddr: "239.0.0.95"
+
+
+#CIB
+cibPath: "/usr/local/src/"
