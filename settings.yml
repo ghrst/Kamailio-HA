@@ -3,6 +3,12 @@ mySqlRootPass: password
 mySqlKamailioUser: kamailiouser
 mySqlKamailioPass: password
 mySqlHost: "192.168.120.79"
+mySqlBindIP: "{{mySqlHost}}"
+
+#Allowed IP addresses to be connected to remote MySQL server
+#FIXME:: These IP addresses should be inferred automatically. Anyway creating Kamailio's DB using two hosts will cause problems.
+kam1IP: "192.168.120.66"
+kam2IP: "192.168.120.76"
 
 
 #Kamailio-related settings

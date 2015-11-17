@@ -33,12 +33,21 @@
       mysql_user:
         name: "{{mySqlKamailioUser}}"
         host: "{{item}}"
+        priv: "kamailio.*:ALL,GRANT"
         password: "{{mySqlKamailioPass}}"
         login_user: root
         login_password: "{{mySqlRootPass}}"
       with_items: 
         - 127.0.0.1
         - "{{kamailioPublicIP}}"
+        - "{{kam1IP}}"
+        - "{{kam2IP}}"
         - localhost
+        
+    - name: Ensure MySQL will listen to mySqlBindIP
+      lineinfile: dest=/etc/mysql/my.cnf regexp='bind-address\s*=\s*127\.0\.0\.1\s*' line='bind-address   = {{mySqlBindIP}}' state=present backrefs=yes
+  
+    - name: Restarting MySQL
+      service: name=mysql state=restarted
          
         
