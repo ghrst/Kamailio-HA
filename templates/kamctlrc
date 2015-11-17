@@ -20,7 +20,7 @@ SIP_DOMAIN={{kamailioSIPDomain}}
 DBENGINE=MYSQL
 
 ## database host
-# DBHOST=localhost
+DBHOST={{mySqlHost}}
 
 ## database name (for ORACLE this is TNS name)
 DBNAME=kamailio
