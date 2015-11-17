@@ -59,11 +59,6 @@
       
     #Now you can check the output of crm status to see if your nodes are online or not!
     
-    - name: Copying virtual interface config file
-      template: src=./templates/virtualIface dest=/etc/network/interfaces.d/virtualIface force=yes
-    
-    - name: Restarting networking service
-      service: name=networking state=restarted
     
      
   handlers:
