@@ -24,7 +24,6 @@
         - libxmlrpc-core-c3-dev
         - rtpproxy
         - python-mysqldb
-        - mysql-server
         - python-pip
     
     - name: Copy rtpproxy's default file to /etc/default/rtpproxy
@@ -69,33 +68,7 @@
       
     - name: Adding kamailio to different runlevels using update-rc.d kamailio defaults 99
       shell: update-rc.d kamailio defaults 99
-
-    - name: Update mysql root password
-      mysql_user: 
-        name: root
-        host: "{{ item }}"
-        password: "{{mySqlRootPass}}"
-        login_user: root
-        login_password: "{{mySqlRootPass}}"
-        check_implicit_admin: yes
-        priv: "*.*:ALL,GRANT"
-      with_items:
-        - "{{ ansible_hostname }}"
-        - 127.0.0.1
-        - ::1
-        - localhost
-        
-    - name: Adding Kamailio's database user
-      mysql_user:
-        name: "{{mySqlKamailioUser}}"
-        host: "{{item}}"
-        password: "{{mySqlKamailioPass}}"
-        login_user: root
-        login_password: "{{mySqlRootPass}}"
-      with_items: 
-        - 127.0.0.1
-        - localhost
-        
+                
     - name: Copying kamctlrc files
       template: src=templates/kamctlrc dest=/etc/kamailio/kamctlrc force=yes
       
