@@ -16,8 +16,21 @@ configure-ha.yml:   This file contains a play that configures necessary resource
 
 mysql.yml:          This file contains a play that you can use to install and configure  MySQL server.
 
-In order to deploy th cluster first you must change settings.yml, then install Kamailio and HA tools and then configure HA tools.
-Project is not yet complete but with minor changes it works!
+In order to deploy th cluster you should run the files in the following order:
+
+0- chmod a+x mysql.yml kamailio.yml ha-tools.yml configure-ha.yml
+
+1- Edit hosts file to add your hosts
+
+2- Edit settings.yml to customize things like MySQL settings, IP addresses, ...
+
+3- Run mysql.yml to install your database server
+
+4- Run kamailio.yml to install Kamailio
+
+5- Run ha-tools.yml to install HA tools
+
+6- Run configure-ha.yml to configure HA tools
 
 Author: Gholamreza Sabery Tabrizy
 
