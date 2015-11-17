@@ -65,10 +65,17 @@
     
     - name: Installing Kamailio's init script from files into /etc/init.d/kamailio
       copy: src=./files/kamailio.init dest=/etc/init.d/kamailio mode=0755
+        
+  handlers:
+    - name: restart rtpproxy
+      service: name=rtpproxy state=restarted
+
       
-    - name: Adding kamailio to different runlevels using update-rc.d kamailio defaults 99
-      shell: update-rc.d kamailio defaults 99
-                
+- name: This play creates Kamailio's database
+  hosts: kamailioDbCreator
+  vars_files:
+    - settings.yml
+  tasks:
     - name: Copying kamctlrc files
       template: src=templates/kamctlrc dest=/etc/kamailio/kamctlrc force=yes
       
@@ -81,12 +88,6 @@
         responses: 
             password: "{{mySqlRootPass}}"
             Install: "y"
-      
-
-    - name: Starting Kamailio's service
-      service: name=kamailio state=started
-      
+  
+  
     
-  handlers:
-    - name: restart rtpproxy
-      service: name=rtpproxy state=restarted
