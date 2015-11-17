@@ -8,8 +8,6 @@
 
 - name: This play is going to configure Corosync and Pacemaker
   hosts: kamailio
-  vars:
-    cibPath: "/usr/local/src/"
   vars_files:
     - settings.yml
   tasks:
