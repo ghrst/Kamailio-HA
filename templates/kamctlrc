@@ -35,10 +35,10 @@ DBRWUSER={{mySqlKamailioUser}}
 DBRWPW={{mySqlKamailioPass}}
 
 ## database read only user
-# DBROUSER="kamailioro"
+DBROUSER={{mySqlKamailioUser}}
 
 ## password for database read only user
-# DBROPW="kamailioro"
+DBROPW={{mySqlKamailioPass}}
 
 ## database access host (from where is kamctl used)
 # DBACCESSHOST=192.168.0.1
