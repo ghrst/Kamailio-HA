@@ -22,16 +22,21 @@
         - openssl
         - libmysqlclient-dev
         - libxmlrpc-core-c3-dev
-        - rtpproxy
         - python-mysqldb
         - python-pip
     
+    - name: Installing a local instance of RTPProxy
+      apt: pkg= rtpproxy update_cache=yes
+      when: not withRTPProxyCluster
+    
     - name: Copy rtpproxy's default file to /etc/default/rtpproxy
       template: src=./templates/rtpproxy.default dest=/etc/default/rtpproxy force=yes
+      when: not withRTPProxyCluster
     
     - name: Copy rtpproxy's init script to /etc/init.d/rtpproxy
       copy: src=./files/rtpproxy.init dest=/etc/init.d/rtpproxy force=yes
       notify: restart rtpproxy
+      when: not withRTPProxyCluster
       
     - name: Create a directory to store Kamailio's source files
       file: path={{kamailioSrcPath}} state=directory

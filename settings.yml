@@ -27,6 +27,16 @@ kamailioSIPDomain: "{{kamailioPublicIP}}"
 preferencesPath: /etc/apt/preferences.d/
 mtCastAddr: "239.0.0.95"
 
+#RTPProxy related settings
+# If you want to deploy with a cluster of rtpproxy servers set this variable to True and set rtpproxy server informations using rtpServers array.
+# Otherwise each node in the cluster will have it's own local rtpproxy server.
+withRTPProxyCluster: False  
+#This is an array that contains a list of entries that will automatically added to rtpproxy's database
+#Each item must be of the form ip:port.
+rtpHostsInfo: 
+    - 192.168.120.55:7722
+rtpProxyDBURL: mysql://root:password@192.168.120.79/rtpproxy
+
 
 #CIB
 cibPath: "/usr/local/src/"
