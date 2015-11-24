@@ -13,3 +13,9 @@
 
 #This group should contain one of the hosts in kamailio group. It is used in a play inside kamailio.yml to call kamdbctl create
 [kamailioDbCreator]
+
+
+
+
+#If you want to separate Kamailio servers from RTPProxy servers first set related settings in settings.yml and add your hosts here
+[rtpproxy]
