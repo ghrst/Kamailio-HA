@@ -1,9 +1,13 @@
 # Defaults for rtpproxy
 
 # To listen on an UDP socket, uncomment this line:
+{% if withRTPProxyCluster %}
+LISTEN_ADDR={{ansible_eth0.ipv4.address}}
+CONTROL_SOCK="udp:{{ansible_eth0.ipv4.address}}:7722"
+{% else %}
 LISTEN_ADDR={{kamailioVirtualIP}}
 CONTROL_SOCK="udp:localhost:7722"
-
+{% endif %}
 
 # Additional options that are passed to the daemon.
 EXTRA_OPTS="-l ${LISTEN_ADDR}"
