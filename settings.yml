@@ -35,7 +35,9 @@ withRTPProxyCluster: False
 #Each item must be of the form ip:port.
 rtpHostsInfo: 
     - 192.168.120.55:7722
-rtpProxyDBURL: mysql://root:password@192.168.120.79/rtpproxy
+rtpProxyMySQLUser: rtpproxy
+rtpProxyMySQLPass: password    
+rtpProxyDBURL: mysql://{{rtpProxyMySQLUser}}:{{rtpProxyMySQLPass}}@{{mySqlHost}}/rtpproxy
 
 
 #CIB
