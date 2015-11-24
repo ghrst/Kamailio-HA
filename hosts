@@ -19,3 +19,7 @@
 
 #If you want to separate Kamailio servers from RTPProxy servers first set related settings in settings.yml and add your hosts here
 [rtpproxy]
+
+
+#The host that is used to create RTPProxy's database. Only one host should be in this group
+[rtpproxyDbCreator]

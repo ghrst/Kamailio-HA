@@ -11,4 +11,37 @@
   vars_files:
     - settings.yml
   tasks:
+    - name: Installing RTPProxy on each hosts
+      apt: pkg=rtpproxy update_cache=yes
+      when: withRTPProxyCluster
+   
+    - name: Copy rtpproxy's default file to /etc/default/rtpproxy
+      template: src=templates/rtpproxy.default dest=/etc/default/rtpproxy force=yes
+      when: withRTPProxyCluster
+    
+    - name: Copy rtpproxy's init script to /etc/init.d/rtpproxy
+      copy: src=./files/rtpproxy.init dest=/etc/init.d/rtpproxy force=yes
+      when: withRTPProxyCluster
+      
+    - name: Starting RTPProxy's service
+      service: name=rtpproxy state=restarted
+    
+    
+- name: This play creates a database for RTPProxy and adds hosts in rtpHostsInfo var to it.
+  hosts: rtpproxyDbCreator
+  vars_files:
+    - settings.yml
+  tasks:
+    - name: Creating rtpproxy's database
+      mysql_db: login_user=root login_password={{mySqlRootPass}} login_host={{mySqlHost}} name=rtpproxy state=present
+      when: withRTPProxyCluster
+      
+    - name: Templating rtpproxy.mysql file
+      template: src=templates/rtpproxy.mysql dest=/usr/local/src/rtpproxy.mysql force=yes
+      when: withRTPProxyCluster
+      
+    - name: Adding necessary tables to rtpproxy's database and inserting related database
+      mysql_db: login_user=root login_password={{mySqlRootPass}} login_host={{mySqlHost}} name=rtpproxy state=import target=/usr/local/src/rtpproxy.mysql
+      when: withRTPProxyCluster
+     
     

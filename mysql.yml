@@ -29,6 +29,7 @@
         - ::1
         - "{{kam1IP}}"
         - "{{kam2IP}}"
+        - "{{mySqlHost}}"
         - localhost
         
     - name: Adding Kamailio's database user
