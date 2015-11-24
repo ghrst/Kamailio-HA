@@ -46,6 +46,21 @@
         - "{{kam2IP}}"
         - localhost
         
+    - name: Adding RTPProxy database user
+      mysql_user:
+        name: "{{rtpProxyMySQLUser}}"
+        host: "{{item}}"
+        priv: "rtpproxy.*:ALL,GRANT"
+        password: "{{rtpProxyMySQLPass}}"
+        login_user: root
+        login_password: "{{mySqlRootPass}}"
+      with_items: 
+        - 127.0.0.1
+        - "{{kamailioPublicIP}}"
+        - "{{kam1IP}}"
+        - "{{kam2IP}}"
+        - localhost
+        
     - name: Ensure MySQL will listen to mySqlBindIP
       lineinfile: dest=/etc/mysql/my.cnf regexp='bind-address\s*=\s*127\.0\.0\.1\s*' line='bind-address   = {{mySqlBindIP}}' state=present backrefs=yes
   
