@@ -12,7 +12,10 @@
     - settings.yml
   tasks:
     - name: Installing mysql-server
-      apt: pkg=mysql-server update_cache=yes
+      apt: pkg={{ item }} update_cache=yes
+      with_items:
+         - mysql-server
+         - python-mysqldb
     
     - name: Update mysql root password
       mysql_user: 
