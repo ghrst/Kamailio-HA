@@ -7,7 +7,7 @@
 ##############################################################
 
 - name: This play is going to configure Corosync and Pacemaker
-  hosts: kamailio
+  hosts: kamailioDbCreator
   vars_files:
     - settings.yml
   tasks:
