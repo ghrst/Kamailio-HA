@@ -34,11 +34,11 @@ other necessary variables.
 
 4- Run kamailio.yml to install Kamailio
 
-5- Run ha-tools.yml to install HA tools
+5- If you need a cluster of RTPProxy servers run rtpproxy.yml
 
-6- Run configure-ha.yml to configure HA tools
+6- Run ha-tools.yml to install HA tools
 
-7- If you need a cluster of RTPProxy servers run rtpproxy.yml
+7- Run configure-ha.yml to configure HA tools
 
 
 Author: Gholamreza Sabery Tabrizy
