@@ -16,51 +16,173 @@
     - settings.yml
 
   tasks:
-    - name: To use this ppa with https, first install the https transport module for apt (Pacemaker is in these repositores) refer to 'https://wiki.debian.org/Debian-HA/ClustersFromScratch'
-      apt: pkg=apt-transport-https update_cache=yes
-      
-    - name: save the MMOD List (http) or MMOD List (https) to /etc/apt/sources.list.d/ 
-      get_url: url=https://ppa.mmogp.com/apt/debian/transport/https/mmod.list dest=/etc/apt/sources.list.d/mmod.list force=yes
-    
-    - name: Finally, add the MMOD GnuPG Key to your system and update apt
-      apt_key: url=https://ppa.mmogp.com/apt/debian/mmod.gpg.key
-    
-    - name: Adding repository
-      apt_repository: repo='deb http://ftp.de.debian.org/debian testing main' state=present update_cache=yes
-      
-    - name: And we should add also a preferences file, so in this way we won't mess with the system
-      copy: src=./files/preferences-mmod dest={{preferencesPath}}/preferences-mmod force=yes
-    
-    - name: Copying the other preferences file
-      copy: src=./files/preferences-testing dest={{preferencesPath}}/preferences-testing force=yes
-      
-    - name: Now we are reaqdy to install our packages. I used default_release which is equal to -t (refer to installation guide)
-      apt: pkg={{item}} update_cache=yes default_release=testing
+  
+    - name: Installing prerequisites for compiling Corosync and Pacemaker
+      apt: pkg={{ item }} update_cache=yes
       with_items:
-        - libqb0
-        - fence-agents
-        
-    - name: Finally installing pacemaker and corosync
-      apt: pkg={{item}} update_cache=yes
-      with_items:
-        - pacemaker
-        - corosync
+        - build-essential
+        - automake
+        - autoconf
+        - libtool
+        - pkg-config
+        - libnss3-dev
+        - groff
+        - libaio-dev
+        - libtool-bin
+        - libglib2.0-dev
+        - libxml2-dev
+        - libbz2-dev
+        - uuid-dev
+        - uuid
+        - libxslt1-dev
+        - libncurses5-dev
+        - python-lxml
+          
+    - name: Downloading libpq's source package
+      get_url: url=https://github.com/ClusterLabs/libqb/archive/v0.17.0.tar.gz dest=/usr/src/libpq-0.17.0.tar.gz 
+      
+    - name: Untaring libpq's archive
+      unarchive: src=/usr/src/libpq-0.17.0.tar.gz dest=/usr/src copy=no
+      
+    - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
+      shell: echo "0.17.0" > .tarball-version chdir=/usr/src/libqb-0.17.0
+      
+    - name: ./autogen.sh
+      shell: ./autogen.sh chdir=/usr/src/libqb-0.17.0
+      
+    - name: ./configure
+      shell: ./configure chdir=/usr/src/libqb-0.17.0
+      
+    - name: Compiling Libpq
+      shell: make chdir=/usr/src/libqb-0.17.0
+      
+    - name: make install 
+      shell: make install chdir=/usr/src/libqb-0.17.0
     
-    #FIXME:: Adding to different runlevels! This currently does not work use another mechanism.
+    - name: Downloading Corosync's source code
+      get_url: url=https://github.com/corosync/corosync/archive/v2.3.3.tar.gz dest=/usr/src/corosync-2.3.3.tar.gz
+      
+    - name: Untaring Corosync's source archive
+      unarchive: src=/usr/src/corosync-2.3.3.tar.gz dest=/usr/src/ copy=no
+      
+    - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
+      shell: echo "2.3.3" > .tarball-version chdir=/usr/src/corosync-2.3.3
+      
+    - name: ./autogen.shell
+      shell: ./autogen.sh chdir=/usr/src/corosync-2.3.3
+      
+    - name: ./configure
+      shell: ./configure chdir=/usr/src/corosync-2.3.3
+      
+    - name: Compiling Corosync
+      shell: make   chdir=/usr/src/corosync-2.3.3
+      
+    - name: Installing Corosync
+      shell: make install chdir=/usr/src/corosync-2.3.3
+    
+    - name: Downloading Cluster-Glue's source code
+      get_url: url=http://hg.linux-ha.org/glue/archive/glue-1.0.12.tar.bz2 dest=/usr/src/ 
+      
+    - name: Untaring Cluster-Glue's source archive
+      unarchive: src=/usr/src/glue-1.0.12.tar.bz2 dest=/usr/src/ copy=no
+      
+    - name: ./autogen.shell
+      shell: ./autogen.sh chdir=/usr/src/Reusable-Cluster-Components-glue--glue-1.0.12
+      
+    - name: ./configure
+      shell: ./configure --enable-fatal-warnings=no chdir=/usr/src/Reusable-Cluster-Components-glue--glue-1.0.12
+      
+    - name: Compiling Cluster-Glue
+      shell: make chdir=/usr/src/Reusable-Cluster-Components-glue--glue-1.0.12
+      
+    - name: Installing Cluster-Glue
+      shell: make install chdir=/usr/src/Reusable-Cluster-Components-glue--glue-1.0.12
+      
+    - name: Downloading Resource Agents
+      get_url: url=https://github.com/ClusterLabs/resource-agents/archive/v3.9.5.tar.gz dest=/usr/src/
+      
+    - name: Untaring Resource Agent's archive
+      unarchive: src=/usr/src/resource-agents-3.9.5.tar.gz dest=/usr/src/ copy=no
+      
+    - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
+      shell: echo "3.9.5" > .tarball-version chdir=/usr/src/resource-agents-3.9.5
+      
+    - name: ./autogen.sh 
+      shell: ./autogen.sh chdir=/usr/src/resource-agents-3.9.5
+      
+    - name: ./configure
+      shell: ./configure chdir=/usr/src/resource-agents-3.9.5
+      
+    - name: Compiling Resource Agents
+      shell: make chdir=/usr/src/resource-agents-3.9.5
+      
+    - name: Installing Resource Agents
+      shell: make install chdir=/usr/src/resource-agents-3.9.5
+      
+    - name: Adding a group for pacemaker
+      group: name=haclient system=yes state=present
+
+    - name: Adding a user for Pacemaker
+      user: name=hacluster system=yes createhome=no group=haclient
+      
+    - name: Downloading Pacemaker's Source code  
+      get_url: url=https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13.tar.gz dest=/usr/src
+      
+    - name: Untarring Pacemaker's source code!
+      unarchive: src=/usr/src/pacemaker-Pacemaker-1.1.13.tar.gz dest=/usr/src copy=no
+      
+    - name: ./autogen.sh
+      shell: ./autogen.sh  chdir=/usr/src/pacemaker-Pacemaker-1.1.13
+      
+    - name: ./configure
+      shell: ./configure  chdir=/usr/src/pacemaker-Pacemaker-1.1.13
+      
+    - name: make
+      shell: make chdir=/usr/src/pacemaker-Pacemaker-1.1.13
+      
+    - name: make install
+      shell: make install chdir=/usr/src/pacemaker-Pacemaker-1.1.13
+      
+    - name: Downloading crmsh's source code
+      get_url: url=https://github.com/ClusterLabs/crmsh/archive/2.1.0.tar.gz dest=/usr/src/crmsh-2.1.0.tar.gz
+      
+    - name: Un-taring crmsh's source code
+      unarchive: src=/usr/src/crmsh-2.1.0.tar.gz dest=/usr/src copy=no
+      
+    - name: ./autogen.sh
+      shell: ./autogen.sh chdir=/usr/src/crmsh-2.1.0
+      
+    - name: ./configure
+      shell: ./configure chdir=/usr/src/crmsh-2.1.0
+      
+    - name: Compiling crmsh
+      shell: make chdir=/usr/src/crmsh-2.1.0
+      
+    - name: Installing crmsh
+      shell: make install chdir=/usr/src/crmsh-2.1.0
+    
+    - name: Adding Default Start runlevels to Corosync's init script
+      lineinfile: 'dest=/etc/init.d/corosync regexp="^# Default-Start:" line="# Default-Start: 2 3 4 5" state=present' 
+      
+    - name: Adding Default Start runlevels to Pacemaker's init script
+      lineinfile: 'dest=/etc/init.d/pacemaker regexp="^# Default-Start:" line="# Default-Start: 2 3 4 5" state=present'
+    
     - name: Adding corosync to different runlevels
-      service: name=corosync enabled=yes state=started
+      shell: update-rc.d corosync defaults
       
     - name: Adding pacemaker to different runlevels
-      service: name=pacemaker enabled=yes state=started
+      shell: update-rc.d pacemaker defaults
         
     - name: Copying corosync configuration template to each machine!
-      template: src=./templates/corosync.conf dest=/etc/corosync/corosync.conf force=yes
+      template: src=templates/corosync.conf dest=/etc/corosync/corosync.conf force=yes
       notify: restart corosync
+      
+    - name:Creating /var/log/corosync
+      file: path=/var/log/corosync state=directory owner=hacluster group=haclient mode=0755
       
     #Now you can check the output of crm status to see if your nodes are online or not!
     
     
-     
   handlers:
     - name: restart corosync
       service: name=corosync state=restarted
