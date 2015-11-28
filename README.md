@@ -55,6 +55,8 @@ other necessary variables.
 
 **7**- Run configure-ha.yml to configure HA tools
 
+Authors
+=======
 
 **Author**: Gholamreza Sabery Tabrizy
 
