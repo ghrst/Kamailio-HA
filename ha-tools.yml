@@ -99,25 +99,25 @@
       shell: make install chdir=/usr/src/Reusable-Cluster-Components-glue--glue-1.0.12
       
     - name: Downloading Resource Agents
-      get_url: url=https://github.com/ClusterLabs/resource-agents/archive/v3.9.5.tar.gz dest=/usr/src/
+      get_url: url=https://github.com/ClusterLabs/resource-agents/archive/v3.9.6.tar.gz dest=/usr/src/
       
     - name: Un-taring Resource Agent's archive
-      unarchive: src=/usr/src/resource-agents-3.9.5.tar.gz dest=/usr/src/ copy=no
+      unarchive: src=/usr/src/resource-agents-3.9.6.tar.gz dest=/usr/src/ copy=no
       
     - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
-      shell: echo "3.9.5" > .tarball-version chdir=/usr/src/resource-agents-3.9.5
+      shell: echo "3.9.5" > .tarball-version chdir=/usr/src/resource-agents-3.9.6
       
     - name: ./autogen.sh 
-      shell: ./autogen.sh chdir=/usr/src/resource-agents-3.9.5
+      shell: ./autogen.sh chdir=/usr/src/resource-agents-3.9.6
       
     - name: ./configure
-      shell: ./configure chdir=/usr/src/resource-agents-3.9.5
+      shell: ./configure chdir=/usr/src/resource-agents-3.9.6
       
     - name: Compiling Resource Agents
-      shell: make chdir=/usr/src/resource-agents-3.9.5
+      shell: make chdir=/usr/src/resource-agents-3.9.6
       
     - name: Installing Resource Agents
-      shell: make install chdir=/usr/src/resource-agents-3.9.5
+      shell: make install chdir=/usr/src/resource-agents-3.9.6
       
     - name: Adding a group for pacemaker
       group: name=haclient system=yes state=present
