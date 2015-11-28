@@ -41,7 +41,7 @@
     - name: Downloading libpq's source package
       get_url: url=https://github.com/ClusterLabs/libqb/archive/v0.17.0.tar.gz dest=/usr/src/libpq-0.17.0.tar.gz 
       
-    - name: Untaring libpq's archive
+    - name: Un-taring libpq's archive
       unarchive: src=/usr/src/libpq-0.17.0.tar.gz dest=/usr/src copy=no
       
     - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
@@ -62,7 +62,7 @@
     - name: Downloading Corosync's source code
       get_url: url=https://github.com/corosync/corosync/archive/v2.3.3.tar.gz dest=/usr/src/corosync-2.3.3.tar.gz
       
-    - name: Untaring Corosync's source archive
+    - name: Un-taring Corosync's source archive
       unarchive: src=/usr/src/corosync-2.3.3.tar.gz dest=/usr/src/ copy=no
       
     - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
@@ -83,7 +83,7 @@
     - name: Downloading Cluster-Glue's source code
       get_url: url=http://hg.linux-ha.org/glue/archive/glue-1.0.12.tar.bz2 dest=/usr/src/ 
       
-    - name: Untaring Cluster-Glue's source archive
+    - name: Un-taring Cluster-Glue's source archive
       unarchive: src=/usr/src/glue-1.0.12.tar.bz2 dest=/usr/src/ copy=no
       
     - name: ./autogen.shell
@@ -101,7 +101,7 @@
     - name: Downloading Resource Agents
       get_url: url=https://github.com/ClusterLabs/resource-agents/archive/v3.9.5.tar.gz dest=/usr/src/
       
-    - name: Untaring Resource Agent's archive
+    - name: Un-taring Resource Agent's archive
       unarchive: src=/usr/src/resource-agents-3.9.5.tar.gz dest=/usr/src/ copy=no
       
     - name: Echoing version to .tarball_version refer to http://clusterlabs.org/wiki/Compiling_on_Debian#Update_for_Debian_8.0_.22Jessie.22
@@ -128,7 +128,7 @@
     - name: Downloading Pacemaker's Source code  
       get_url: url=https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13.tar.gz dest=/usr/src
       
-    - name: Untarring Pacemaker's source code!
+    - name: Un-taring Pacemaker's source code!
       unarchive: src=/usr/src/pacemaker-Pacemaker-1.1.13.tar.gz dest=/usr/src copy=no
       
     - name: ./autogen.sh
@@ -177,13 +177,13 @@
       template: src=templates/corosync.conf dest=/etc/corosync/corosync.conf force=yes
       notify: restart corosync
       
-    - name:Creating /var/log/corosync
+    - name: Creating /var/log/corosync
       file: path=/var/log/corosync state=directory owner=hacluster group=haclient mode=0755
       
-    #Now you can check the output of crm status to see if your nodes are online or not!
-    
-    
-  handlers:
-    - name: restart corosync
+    - name: Start Corosync
       service: name=corosync state=restarted
+      
+    - name: Start Pacemaker
+      service: name=pacemaker state=restarted
+
     
