@@ -19,6 +19,8 @@ rtpproxy.yml:       This file contains two plays for installing and configuring 
 
 In order to deploy th cluster you should run the files in the following order:
 
+Caution: Before starting make sure that the hostname of two nodes are different.
+
 0- chmod a+x mysql.yml kamailio.yml ha-tools.yml configure-ha.yml rtpproxy.yml
 
 1- Edit hosts file to add your hosts
