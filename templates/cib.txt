@@ -4,7 +4,7 @@ primitive kamailio-ip IPaddr2 \
         op start interval=0 timeout=20s \
         op monitor interval=10s timeout=20s
 primitive kamailio-srv kamailio \
-        params listen_address={{kamailioVirtualIP}} monitoring_ip={{kamailioVirtualIP}} proto=udp port=5060 binary="/sbin/kamailio" conffile="/etc/kamailio/kamailio.cfg" \
+        params listen_address={{kamailioVirtualIP}} monitoring_ip={{kamailioVirtualIP}} proto=udp port=5060 binary="/sbin/kamailio" conffile="/etc/kamailio/kamailio.cfg" pidfile="/var/run/kamailio/kamailio.pid" kamuser=kamailio kamctlrc="/etc/kamailio/kamctlrc"  \
         op stop interval=0 timeout=30s  \
         op start interval=0 timeout=60s  \
         op monitor interval=10s timeout=30s  \
