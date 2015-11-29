@@ -181,9 +181,9 @@
       file: path=/var/log/corosync state=directory owner=hacluster group=haclient mode=0755
       
     - name: Start Corosync
-      service: name=corosync state=restarted
+      service: name=corosync state=started
       
     - name: Start Pacemaker
-      service: name=pacemaker state=restarted
+      service: name=pacemaker state=started
 
     
