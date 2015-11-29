@@ -79,6 +79,9 @@
       
     - name: Installing Corosync
       shell: make install chdir=/usr/src/corosync-2.3.3
+      
+    - name: Copying Corosync's init script
+      copy: src=files/corosync.init dest=/etc/init.d/corosync force=yes mode="a+x"
     
     - name: Downloading Cluster-Glue's source code
       get_url: url=http://hg.linux-ha.org/glue/archive/glue-1.0.12.tar.bz2 dest=/usr/src/ 
