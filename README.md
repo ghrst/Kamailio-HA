@@ -29,6 +29,7 @@ Prerequisites
 
 * Debian Jessie
 * Ansible 2
+* sshpass : apt-get install sshpass
 
 
 Usage
