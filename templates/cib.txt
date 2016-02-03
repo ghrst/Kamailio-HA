@@ -10,11 +10,13 @@ primitive kamailio-srv kamailio \
         op monitor interval=10s timeout=30s  \
         meta target-role=Started
 {% if withRTPProxyCluster %}
-group kamailio-group kamailio-ip kamailio-srv
+group kamailio-group kamailio-ip kamailio-srv \
+        meta target-role=Started migration-threshold=100 failure-timeout=30s
 {% else %}
 primitive rtpproxy lsb:rtpproxy \
         op stop interval=0 timeout=20s \
         op start interval=0 timeout=20 \
         op monitor interval=10s timeout=20s
-group kamailio-group kamailio-ip rtpproxy kamailio-srv
+group kamailio-group kamailio-ip rtpproxy kamailio-srv \
+        meta target-role=Started migration-threshold=100 failure-timeout=30s
 {% endif %}
