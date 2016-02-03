@@ -20,6 +20,9 @@
       
     - name: Configure no-qourum-policy = ignore because we have a two node cluster.
       shell: crm configure property no-quorum-policy=ignore
+      
+    - name: For ensuring time-based actions refer to http://clusterlabs.org/doc/en-US/Pacemaker/1.1-pcs/html/Pacemaker_Explained/s-rules-recheck.html
+      shell: crm configure property cluster-recheck-interval=5m
     
     - name: We want the resources to stick to the node they are on so set default-resource-stickiness = 10000 (This can also be configured per resource)
       shell: crm configure property default-resource-stickiness=10000    
