@@ -10,5 +10,9 @@ CONTROL_SOCK="udp:localhost:7722"
 {% endif %}
 
 # Additional options that are passed to the daemon.
+{% if withAdvertiseAddr %}
+EXTRA_OPTS="-l ${LISTEN_ADDR} -A {{ advertiseAddresses[ansible_eth0.ipv4.address] }}"
+{% else %}
 EXTRA_OPTS="-l ${LISTEN_ADDR}"
+{% endif %}
 

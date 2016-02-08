@@ -11,8 +11,24 @@
   vars_files:
     - settings.yml
   tasks:
-    - name: Installing RTPProxy on each hosts
-      apt: pkg=rtpproxy update_cache=yes
+    - name: Downloading RTPProxy's source code
+      get_url: url=https://github.com/sippy/rtpproxy/archive/sessinfo_ng_is_coming.tar.gz dest=/usr/local/src
+      when: withRTPProxyCluster
+      
+    - name: Un-taring RTPProxy's source code
+      unarchive: src=/usr/local/src/rtpproxy-sessinfo_ng_is_coming.tar.gz dest=/usr/local/src/ copy=no
+      when: withRTPProxyCluster
+      
+    - name: Configuring 
+      shell: ./configure --prefix=/ chdir=/usr/local/src//rtpproxy-sessinfo_ng_is_coming
+      when: withRTPProxyCluster
+      
+    - name: Configuring 
+      shell: make chdir=/usr/local/src//rtpproxy-sessinfo_ng_is_coming
+      when: withRTPProxyCluster
+      
+    - name: Configuring 
+      shell: make install chdir=/usr/local/src//rtpproxy-sessinfo_ng_is_coming
       when: withRTPProxyCluster
    
     - name: Copy rtpproxy's default file to /etc/default/rtpproxy
@@ -20,11 +36,24 @@
       when: withRTPProxyCluster
     
     - name: Copy rtpproxy's init script to /etc/init.d/rtpproxy
-      copy: src=./files/rtpproxy.init dest=/etc/init.d/rtpproxy force=yes
+      copy: src=./files/rtpproxy.init dest=/etc/init.d/rtpproxy force=yes mode="a+rx"
+      when: withRTPProxyCluster
+      
+    - name: Adding a group for rtpproxy
+      group: name=rtpproxy system=yes state=present
+      when: withRTPProxyCluster
+      
+    - name: Adding a user for rtpproxy
+      user: name=rtpproxy system=yes createhome=no group=rtpproxy shell=/bin/false
+      when: withRTPProxyCluster
+      
+    - name: update-rc.d
+      shell: update-rc.d rtpproxy defaults
       when: withRTPProxyCluster
       
     - name: Starting RTPProxy's service
       service: name=rtpproxy state=restarted
+      when: withRTPProxyCluster
     
     
 - name: This play creates a database for RTPProxy and adds hosts in rtpHostsInfo var to it.
@@ -33,7 +62,7 @@
     - settings.yml
   tasks:
     - name: Creating rtpproxy's database
-      mysql_db: login_user=root login_password={{mySqlRootPass}} login_host={{mySqlHost}} name=rtpproxy state=present
+      mysql_db: login_user={{mysqlLoginUser}} login_password={{mySqlRootPass}} login_host={{mySqlHost}} name=rtpproxy state=present
       when: withRTPProxyCluster
       
     - name: Templating rtpproxy.mysql file
@@ -41,7 +70,7 @@
       when: withRTPProxyCluster
       
     - name: Adding necessary tables to rtpproxy's database and inserting related database
-      mysql_db: login_user=root login_password={{mySqlRootPass}} login_host={{mySqlHost}} name=rtpproxy state=import target=/usr/local/src/rtpproxy.mysql
+      mysql_db: login_user={{mysqlLoginUser}} login_password={{mySqlRootPass}} login_host={{mySqlHost}} name=rtpproxy state=import target=/usr/local/src/rtpproxy.mysql
       when: withRTPProxyCluster
      
     
