@@ -16,7 +16,7 @@ ulimit -n 999999
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 NAME=rtpproxy
 DESC="RTP relay"
-DAEMON=/usr/bin/$NAME
+DAEMON=/bin/$NAME
 USER=$NAME
 GROUP=$USER
 PIDFILE="/var/run/$NAME/$NAME.pid"
