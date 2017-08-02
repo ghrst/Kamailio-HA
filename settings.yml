@@ -16,6 +16,7 @@ kam2IP: "192.168.120.76"
 kamailioSrcPath: /usr/local/src/kamailio
 kamailioHomeDir: /var/run/kamailio
 kamailioDbURL: mysql://{{mySqlKamailioUser}}:{{mySqlKamailioPass}}@{{mySqlHost}}/kamailio
+#In order to install Kamailio 5xx just change the URL to point to source of 5xx version
 kamailioSourceUrl: http://www.kamailio.org/pub/kamailio/4.1.1/src/kamailio-4.1.1_src.tar.gz
 kamailioVirtualIP: "192.168.120.90"
 kamailioVirtualIPNetMask: "255.255.255.0"
