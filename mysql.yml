@@ -8,6 +8,7 @@
 
 - name: This play installs and configures MySQL Server for Kamailio. 
   hosts: mysql
+  become: True
   vars_files:
     - settings.yml
   tasks:

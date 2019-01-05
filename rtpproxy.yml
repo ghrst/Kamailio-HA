@@ -8,6 +8,7 @@
 
 - name: Using this play you can deploy a cluster of RTPProxy servers to be usd with your Kamailio servers
   hosts: rtpproxy
+  become: True
   vars_files:
     - settings.yml
   tasks:
