@@ -1,8 +1,25 @@
-#Default SSH user is defined in ansible.cfg file as root. You can override this for each host using ansible_ssh_user behavioral parameter.
-#Also default ssh port is assumed to be 22 in ansible.cfg. Again you can override this using: ansible_ssh_port parameter.
+# Caution: Default SSH user is defined in "ansible.cfg" file as root. Note that, You can override this for each host
+# using "ansible_user" parameter. In addition, the default ssh port is defined to be 22 in "ansible.cfg"; you can
+# override this using "ansible_port" parameter. In order to define a host you must use the following format:
 
-#Each line must have the following format:
-#alias ansible_ssh_host=<addr> ansible_ssh_pass=<pass>
+# alias ansible_host=<addr> ansible_port=<SSH-Port> ansible_ssh_pass=<pass>
+
+# Fore more information about Ansible inventory refer to the following link:
+# https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
+
+# Different hosts groups are:
+
+# 1. kamailio: Hosts that you want Ansible to install Kamailio on them.
+
+# 2. MySQL: Host or hosts that you want to install MySQL on them.
+
+# 3. kamailioDbCreator: One of the hosts in the kamailio group must be added to this group. It is used inside
+#    "kamailio.yml" to call "kamdbctl create".
+
+# 4. rtpproxy: Hosts that you want to install RTPProxy on them. Note that, if you want to separate Kamailio servers
+#    from RTPProxy servers; first set related settings in "settings.yml", and then add your hosts here.
+
+# 5. rtpproxyDbCreator: The host that is used to create RTPProxy's database. Only one host should be in this group.
 
 [kamailio]
 
@@ -11,15 +28,13 @@
 [mysql]
 
 
-#This group should contain one of the hosts in kamailio group. It is used in a play inside kamailio.yml to call kamdbctl create
+
 [kamailioDbCreator]
 
 
 
-
-#If you want to separate Kamailio servers from RTPProxy servers first set related settings in settings.yml and add your hosts here
 [rtpproxy]
 
 
-#The host that is used to create RTPProxy's database. Only one host should be in this group
+
 [rtpproxyDbCreator]
