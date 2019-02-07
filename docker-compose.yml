@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  ansible:
+    build:
+      context: ./
+      dockerfile: AnsibleMachine.df
+    image: debian:ansible
+    container_name: "ansible-machine"
+    volumes:
+      - ./:/ansible
+    networks:
+      test_network:
+        ipv4_address: 172.16.0.2
+
+  mysql:
+    build:
+      context: ./
+      dockerfile: TargetMachines.df
+    image: debian:ssh
+    container_name: "mysql"
+    networks:
+      test_network:
+        ipv4_address: 172.16.0.3
+
+  kam1:
+    build:
+      context: ./
+      dockerfile: TargetMachines.df
+    image: debian:ssh
+    container_name: kamailio1
+    networks:
+      test_network:
+        ipv4_address: 172.16.0.4
+
+  kam2:
+    build:
+      context: ./
+      dockerfile: TargetMachines.df
+    image: debian:ssh
+    container_name: kamailio2
+    networks:
+      test_network:
+        ipv4_address: 172.16.0.5
+
+networks:
+  test_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
