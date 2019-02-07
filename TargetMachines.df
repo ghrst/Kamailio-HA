@@ -1,0 +1,8 @@
+FROM debian:stretch
+RUN apt-get update
+RUN apt-get install -y openssh-server
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+RUN service ssh restart
+# Changing root password to password
+RUN echo "root:password" | chpasswd
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]

@@ -1,0 +1,11 @@
+FROM debian:stretch
+RUN apt-get update
+# GNUPG is required for adding a new key
+RUN apt-get install -y gnupg
+# Adding official Ansible repositories, and installing it's latest version
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+RUN apt-get update
+RUN apt-get install -y ansible
+# To simulate a real environment (one that you connect to using SSH and not a local connection), an SSH server is needed
+WORKDIR /ansible
+ENTRYPOINT ["tail", "-f", "/dev/null"]
