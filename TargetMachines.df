@@ -5,4 +5,6 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 RUN service ssh restart
 # Changing root password to password
 RUN echo "root:password" | chpasswd
+# Python is needed for Ansible to work
+RUN apt-get install -y python
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
