@@ -13,18 +13,19 @@
       - settings.yml      
   tasks:  
     - name: Installing compilation prerequisites
-      apt: pkg={{item}} update_cache=yes
-      with_items:
-        - gcc
-        - bison
-        - flex
-        - make
-        - openssl
-        - libmysqlclient-dev
-        - libxmlrpc-core-c3-dev
-        - python-mysqldb
-        - python-pip
-        - mysql-client
+      apt:
+        update_cache: yes
+        name:
+          - gcc
+          - bison
+          - flex
+          - make
+          - openssl
+          - default-libmysqlclient-dev
+          - libxmlrpc-core-c3-dev
+          - python-mysqldb
+          - python-pip
+          - mysql-client
     
     - name: Installing a local instance of RTPProxy
       apt: pkg=rtpproxy update_cache=yes
