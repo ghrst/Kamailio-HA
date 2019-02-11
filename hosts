@@ -21,16 +21,20 @@
 
 # 5. rtpproxyDbCreator: The host that is used to create RTPProxy's database. Only one host should be in this group.
 
-[kamailio]
+# The default entries are added, So you can use the playbooks with Docker
 
+[kamailio]
+kam1 ansible_host=172.16.0.4 ansible_ssh_pass=password
+kam2 ansible_host=172.16.0.5 ansible_ssh_pass=password
 
 
 [mysql]
+mysql ansible_host=172.16.0.3 ansible_ssh_pass=password
 
 
 
 [kamailioDbCreator]
-
+kam1 ansible_host=172.16.0.4 ansible_ssh_pass=password
 
 
 [rtpproxy]

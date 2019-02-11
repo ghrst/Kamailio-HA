@@ -3,13 +3,13 @@ mysqlLoginUser: root
 mySqlRootPass: password
 mySqlKamailioUser: kamailiouser
 mySqlKamailioPass: password
-mySqlHost: "192.168.120.79"
+mySqlHost: "172.16.0.3"
 mySqlBindIP: "{{mySqlHost}}"
 
 #Allowed IP addresses to be connected to remote MySQL server
 #FIXME:: These IP addresses should be inferred automatically. Anyway creating Kamailio's DB using two hosts will cause problems.
-kam1IP: "192.168.120.66"
-kam2IP: "192.168.120.76"
+kam1IP: "172.16.0.4"
+kam2IP: "172.16.0.5"
 
 
 #Kamailio-related settings
@@ -18,10 +18,10 @@ kamailioHomeDir: /var/run/kamailio
 kamailioDbURL: mysql://{{mySqlKamailioUser}}:{{mySqlKamailioPass}}@{{mySqlHost}}/kamailio
 #In order to install Kamailio 5xx just change the URL to point to source of 5xx version
 kamailioSourceUrl: http://www.kamailio.org/pub/kamailio/4.1.1/src/kamailio-4.1.1_src.tar.gz
-kamailioVirtualIP: "192.168.120.90"
+kamailioVirtualIP: "172.16.0.7"
 kamailioVirtualIPNetMask: "255.255.255.0"
-kamailioVirtualIPBroadCast: "192.168.120.255"
-kamailioPublicIP: "192.168.120.90"
+kamailioVirtualIPBroadCast: "172.16.0.255"
+kamailioPublicIP: "172.16.0.7"
 kamailioSIPDomain: "{{kamailioPublicIP}}"
 
 
