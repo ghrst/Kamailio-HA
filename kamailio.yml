@@ -8,7 +8,7 @@
 
 - name: Install and configure Kamailio
   hosts: kamailio
-  become: True
+  become: False
   vars_files:
       - settings.yml      
   tasks:  

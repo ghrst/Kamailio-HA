@@ -11,7 +11,7 @@
 
 - name: Install and configure Corosync, Pacemaker and Crmsh
   hosts: kamailio
-  become: True
+  become: False
   vars_files:
     - settings.yml
 

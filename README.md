@@ -77,6 +77,8 @@ Usage
 
 **Caution**: Before starting make sure that the hostname of two nodes are different.
 
+**Cuation2**: If you want to use sudo change become to True
+
 **0**- chmod a+x mysql.yml kamailio.yml ha-tools.yml configure-ha.yml rtpproxy.yml
 
 **1**- Edit hosts file to add your hosts
