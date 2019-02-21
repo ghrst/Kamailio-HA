@@ -13,8 +13,9 @@
     - settings.yml
   tasks:
     - name: Installing mysql-server
-      apt: pkg={{ item }} update_cache=yes
-      with_items:
+      apt:
+        update_cache: yes
+        name:
          - mysql-server
          - python-mysqldb
     
@@ -67,9 +68,14 @@
         - localhost
         
     - name: Ensure MySQL will listen to mySqlBindIP
-      lineinfile: dest=/etc/mysql/my.cnf regexp='bind-address\s*=\s*127\.0\.0\.1\s*' line='bind-address   = {{mySqlBindIP}}' state=present backrefs=yes
+      lineinfile:
+        dest: /etc/mysql/my.cnf
+        regexp: 'bind-address\s*=\s*127\.0\.0\.1\s*'
+        line: 'bind-address   = {{mySqlBindIP}}'
+        state: present
+        backrefs: yes
   
     - name: Restarting MySQL
-      service: name=mysql state=restarted
-         
-        
+      service:
+        name: mysql
+        state: restarted

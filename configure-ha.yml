@@ -13,7 +13,9 @@
     - settings.yml
   tasks:
     - name: Install sipsak (kamailio's OCF script needs this)
-      apt: pkg=sipsak update_cache=yes
+      apt:
+        update_cache: yes
+        name: sipsak
     
     #FIXME:: Carrying these operation on one of the nodes if enough. Applying settings on multiple nodes causes an error. Anyway it works.
     - name: Now we disable stonith (On a real cluster you must have this)
@@ -29,13 +31,10 @@
       shell: crm configure property default-resource-stickiness=10000    
 
     - name: Copying cib file
-      template: src=templates/cib.txt dest={{cibPath}} force=yes
+      template:
+        src: templates/cib.txt
+        dest: "{{cibPath}}"
+        force: yes
     
     - name: Loading configurations from cib.txt
       shell: crm configure load update {{cibPath}}cib.txt
-      
-     
-    
-    
-    
-    
